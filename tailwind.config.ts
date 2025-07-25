@@ -52,6 +52,10 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// JibonRoute Brand Extensions
+				'emergency-glow': 'hsl(var(--emergency-glow))',
+				'life-green': 'hsl(var(--life-green))',
+				'trust-navy': 'hsl(var(--trust-navy))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
