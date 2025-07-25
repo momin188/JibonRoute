@@ -49,10 +49,20 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="emergency" size="lg" className="text-lg px-8">
+              <Button 
+                variant="emergency" 
+                size="lg" 
+                className="text-lg px-8"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 Book Emergency Ambulance
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 Learn More
               </Button>
             </div>

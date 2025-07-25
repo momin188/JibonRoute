@@ -38,6 +38,10 @@ const Header = () => {
                 key={item.name}
                 href={item.href}
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 {item.name}
               </a>
@@ -46,7 +50,12 @@ const Header = () => {
 
           {/* Emergency Call Button */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="emergency" size="sm" className="gap-2">
+            <Button 
+              variant="emergency" 
+              size="sm" 
+              className="gap-2"
+              onClick={() => window.open('tel:999', '_self')}
+            >
               <Phone className="w-4 h-4" />
               Emergency: 999
             </Button>
@@ -74,13 +83,22 @@ const Header = () => {
                 key={item.name}
                 href={item.href}
                 className="block px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMenuOpen(false);
+                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 {item.name}
               </a>
             ))}
             <div className="px-4 pt-2">
-              <Button variant="emergency" size="sm" className="w-full gap-2">
+              <Button 
+                variant="emergency" 
+                size="sm" 
+                className="w-full gap-2"
+                onClick={() => window.open('tel:999', '_self')}
+              >
                 <Phone className="w-4 h-4" />
                 Emergency: 999
               </Button>

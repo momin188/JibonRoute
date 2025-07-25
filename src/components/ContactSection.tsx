@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Phone, 
   Mail, 
@@ -16,6 +18,60 @@ import {
 } from "lucide-react";
 
 const ContactSection = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    subject: '',
+    message: '',
+    emergency: false
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value, type } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.phone || !formData.email || !formData.message) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.emergency) {
+      toast({
+        title: "Emergency Detected!",
+        description: "For immediate emergency, please call 999 or use the emergency booking button.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Message Sent!",
+      description: "We've received your message and will respond within 24 hours.",
+    });
+
+    // Reset form
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      subject: '',
+      message: '',
+      emergency: false
+    });
+  };
   const contactInfo = [
     {
       icon: Phone,
@@ -126,9 +182,28 @@ const ContactSection = () => {
                       <p className="text-sm text-muted-foreground mb-3">
                         {action.description}
                       </p>
-                      <Button variant={action.variant} size="sm" className="w-full">
-                        {action.action}
-                      </Button>
+                       <Button 
+                         variant={action.variant} 
+                         size="sm" 
+                         className="w-full"
+                         onClick={() => {
+                           if (action.title.includes('Emergency')) {
+                             document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                           } else if (action.title.includes('Hospital')) {
+                             toast({
+                               title: "Feature Coming Soon",
+                               description: "Hospital finder will be available in the next update.",
+                             });
+                           } else if (action.title.includes('Corporate')) {
+                             toast({
+                               title: "Corporate Services",
+                               description: "Please contact us at corporate@jibonroute.com for bulk bookings.",
+                             });
+                           }
+                         }}
+                       >
+                         {action.action}
+                       </Button>
                     </CardContent>
                   </Card>
                 );
@@ -146,52 +221,99 @@ const ContactSection = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input id="name" placeholder="Enter your full name" className="h-12" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input id="phone" placeholder="+880 1XXX-XXXXXX" className="h-12" />
-                  </div>
-                </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name *</Label>
+                        <Input 
+                          id="name" 
+                          placeholder="Enter your full name" 
+                          className="h-12" 
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number *</Label>
+                        <Input 
+                          id="phone" 
+                          placeholder="+880 1XXX-XXXXXX" 
+                          className="h-12" 
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
+                    </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input id="email" type="email" placeholder="your.email@example.com" className="h-12" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="How can we help?" className="h-12" />
-                  </div>
-                </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address *</Label>
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="your.email@example.com" 
+                          className="h-12" 
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="subject">Subject</Label>
+                        <Input 
+                          id="subject" 
+                          placeholder="How can we help?" 
+                          className="h-12" 
+                          value={formData.subject}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                    </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea 
-                    id="message" 
-                    placeholder="Please describe your inquiry or feedback in detail..."
-                    className="min-h-32 resize-none"
-                  />
-                </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Message *</Label>
+                      <Textarea 
+                        id="message" 
+                        placeholder="Please describe your inquiry or feedback in detail..."
+                        className="min-h-32 resize-none"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <input type="checkbox" id="emergency" className="rounded border-border" />
-                    <label htmlFor="emergency">This is an emergency situation</label>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <input 
+                          type="checkbox" 
+                          id="emergency" 
+                          className="rounded border-border" 
+                          checked={formData.emergency}
+                          onChange={handleInputChange}
+                        />
+                        <label htmlFor="emergency">This is an emergency situation</label>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <Button type="submit" variant="hero" size="lg" className="flex-1">
+                          Send Message
+                        </Button>
+                        <Button 
+                          type="button"
+                          variant="outline" 
+                          size="lg" 
+                          className="flex-1"
+                          onClick={() => window.open('tel:999', '_self')}
+                        >
+                          Call Instead
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Button variant="hero" size="lg" className="flex-1">
-                      Send Message
-                    </Button>
-                    <Button variant="outline" size="lg" className="flex-1">
-                      Call Instead
-                    </Button>
-                  </div>
-                </div>
+                </form>
 
                 <div className="bg-life-green/10 border border-life-green/20 rounded-lg p-4">
                   <div className="flex items-start gap-3">
@@ -219,11 +341,23 @@ const ContactSection = () => {
               Join thousands of Dhaka residents who trust JibonRoute for their emergency medical needs
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="emergency" size="lg" className="gap-2">
+              <Button 
+                variant="emergency" 
+                size="lg" 
+                className="gap-2"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 <Ambulance className="w-5 h-5" />
                 Book Emergency Ambulance
               </Button>
-              <Button variant="outline" size="lg">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => toast({
+                  title: "Mobile App Coming Soon!",
+                  description: "Our mobile app will be available on both Android and iOS platforms soon.",
+                })}
+              >
                 Download Mobile App
               </Button>
             </div>
