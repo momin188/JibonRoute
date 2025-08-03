@@ -43,7 +43,7 @@ const BookingSection = () => {
       id: "basic",
       name: "Basic Ambulance",
       description: "Essential emergency transport",
-      price: "৳800-1200",
+      price: "৳1550",
       features: ["Basic life support", "Oxygen supply", "Stretcher"],
       image: basicAmbulanceImg,
       popular: false
@@ -52,7 +52,7 @@ const BookingSection = () => {
       id: "ac",
       name: "AC Ambulance",
       description: "Climate-controlled transport",
-      price: "৳1200-1800",
+      price: "৳2500",
       features: ["Air conditioning", "Basic life support", "Oxygen supply", "Stretcher"],
       image: acAmbulanceImg,
       popular: true
@@ -61,7 +61,7 @@ const BookingSection = () => {
       id: "paramedic",
       name: "Paramedic Ambulance",
       description: "Advanced medical support",
-      price: "৳1800-2500",
+      price: "৳3500",
       features: ["Trained paramedic", "Advanced equipment", "Emergency medications", "AC"],
       image: paramedicAmbulanceImg,
       popular: false
@@ -70,7 +70,7 @@ const BookingSection = () => {
       id: "icu",
       name: "ICU Ambulance",
       description: "Critical care transport",
-      price: "৳2500-3500",
+      price: "৳6000",
       features: ["ICU equipment", "Ventilator", "Cardiac monitor", "Doctor available", "Full life support"],
       image: icuAmbulanceImg,
       popular: false
