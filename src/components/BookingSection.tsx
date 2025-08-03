@@ -23,11 +23,14 @@ import basicAmbulanceImg from "@/assets/basic-ambulance.jpg";
 import acAmbulanceImg from "@/assets/ac-ambulance.jpg";
 import paramedicAmbulanceImg from "@/assets/paramedic-ambulance.jpg";
 import icuAmbulanceImg from "@/assets/icu-ambulance.jpg";
+import AmbulanceDetailsDialog from "@/components/AmbulanceDetailsDialog";
 
 const BookingSection = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedHospital, setSelectedHospital] = useState("");
   const [selectedAmbulance, setSelectedAmbulance] = useState("");
+  const [selectedAmbulanceDetails, setSelectedAmbulanceDetails] = useState<any>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
   const hospitals = [
     { id: "1", name: "Dhaka Medical College Hospital", type: "Government", distance: "2.5 km", rating: 4.2 },
@@ -174,7 +177,10 @@ const BookingSection = () => {
                             ? 'ring-2 ring-life-green bg-life-green/5' 
                             : 'hover:bg-muted/50'
                         }`}
-                        onClick={() => setSelectedAmbulance(ambulance.id)}
+                        onClick={() => {
+                          setSelectedAmbulanceDetails(ambulance);
+                          setIsDetailsDialogOpen(true);
+                        }}
                       >
                         {ambulance.popular && (
                           <Badge className="absolute -top-2 left-4 bg-life-green text-white z-10">
@@ -238,6 +244,12 @@ const BookingSection = () => {
             </CardContent>
           </Card>
         </div>
+
+        <AmbulanceDetailsDialog
+          ambulance={selectedAmbulanceDetails}
+          isOpen={isDetailsDialogOpen}
+          onClose={() => setIsDetailsDialogOpen(false)}
+        />
       </div>
     </section>
   );
