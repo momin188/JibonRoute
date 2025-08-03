@@ -19,16 +19,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-life-green rounded-lg flex items-center justify-center">
-                <Heart className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-emergency-glow rounded-full animate-pulse"></div>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-primary">JibonRoute</h1>
-              <p className="text-xs text-muted-foreground">Life's Route</p>
-            </div>
+            <img 
+              src="/lovable-uploads/7e6fc9e8-3878-4142-9c3b-7fe6104e642e.png" 
+              alt="JibonRoute Logo" 
+              className="h-12 w-auto"
+            />
           </div>
 
           {/* Desktop Navigation */}
