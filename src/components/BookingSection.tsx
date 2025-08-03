@@ -19,6 +19,10 @@ import {
   Truck,
   Plane
 } from "lucide-react";
+import basicAmbulanceImg from "@/assets/basic-ambulance.jpg";
+import acAmbulanceImg from "@/assets/ac-ambulance.jpg";
+import paramedicAmbulanceImg from "@/assets/paramedic-ambulance.jpg";
+import icuAmbulanceImg from "@/assets/icu-ambulance.jpg";
 
 const BookingSection = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -41,7 +45,7 @@ const BookingSection = () => {
       description: "Essential emergency transport",
       price: "৳800-1200",
       features: ["Basic life support", "Oxygen supply", "Stretcher"],
-      icon: Car,
+      image: basicAmbulanceImg,
       popular: false
     },
     {
@@ -50,7 +54,7 @@ const BookingSection = () => {
       description: "Climate-controlled transport",
       price: "৳1200-1800",
       features: ["Air conditioning", "Basic life support", "Oxygen supply", "Stretcher"],
-      icon: Car,
+      image: acAmbulanceImg,
       popular: true
     },
     {
@@ -59,7 +63,7 @@ const BookingSection = () => {
       description: "Advanced medical support",
       price: "৳1800-2500",
       features: ["Trained paramedic", "Advanced equipment", "Emergency medications", "AC"],
-      icon: Stethoscope,
+      image: paramedicAmbulanceImg,
       popular: false
     },
     {
@@ -68,7 +72,7 @@ const BookingSection = () => {
       description: "Critical care transport",
       price: "৳2500-3500",
       features: ["ICU equipment", "Ventilator", "Cardiac monitor", "Doctor available", "Full life support"],
-      icon: Heart,
+      image: icuAmbulanceImg,
       popular: false
     }
   ];
@@ -162,7 +166,6 @@ const BookingSection = () => {
                 <Label className="text-base font-semibold text-foreground">Select Ambulance Type</Label>
                 <div className="grid md:grid-cols-2 gap-4">
                   {ambulanceTypes.map((ambulance) => {
-                    const IconComponent = ambulance.icon;
                     return (
                       <Card 
                         key={ambulance.id}
@@ -174,34 +177,41 @@ const BookingSection = () => {
                         onClick={() => setSelectedAmbulance(ambulance.id)}
                       >
                         {ambulance.popular && (
-                          <Badge className="absolute -top-2 left-4 bg-life-green text-white">
+                          <Badge className="absolute -top-2 left-4 bg-life-green text-white z-10">
                             Most Popular
                           </Badge>
                         )}
-                        <CardContent className="p-4">
+                        <CardContent className="p-0 overflow-hidden">
                           <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                                  <IconComponent className="w-6 h-6 text-primary" />
-                                </div>
+                            {/* Ambulance Image */}
+                            <div className="relative h-32 overflow-hidden">
+                              <img 
+                                src={ambulance.image} 
+                                alt={ambulance.name}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                            </div>
+                            
+                            <div className="p-4 space-y-3">
+                              <div className="flex items-center justify-between">
                                 <div>
                                   <h4 className="font-semibold text-foreground">{ambulance.name}</h4>
                                   <p className="text-sm text-muted-foreground">{ambulance.description}</p>
                                 </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-lg font-bold text-life-green">{ambulance.price}</div>
-                                <div className="text-xs text-muted-foreground">Estimated</div>
-                              </div>
-                            </div>
-                            <div className="space-y-1">
-                              {ambulance.features.map((feature, index) => (
-                                <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <Shield className="w-3 h-3 text-life-green" />
-                                  {feature}
+                                <div className="text-right">
+                                  <div className="text-lg font-bold text-life-green">{ambulance.price}</div>
+                                  <div className="text-xs text-muted-foreground">Estimated</div>
                                 </div>
-                              ))}
+                              </div>
+                              <div className="space-y-1">
+                                {ambulance.features.map((feature, index) => (
+                                  <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Shield className="w-3 h-3 text-life-green" />
+                                    {feature}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </CardContent>
