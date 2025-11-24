@@ -1,9 +1,12 @@
-import { Page, Navbar, Block, Button, Card, List, ListItem } from "konsta/react";
+import { useState } from "react";
+import { Page, Navbar, Block, Button, Card, List, ListItem, Dialog, Toast } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Building2, Truck, CreditCard, Edit, CheckCircle } from "lucide-react";
 
 const BookingSummaryPage = () => {
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const bookingDetails = {
     pickup: "House 12, Road 5, Dhanmondi, Dhaka",
@@ -22,9 +25,11 @@ const BookingSummaryPage = () => {
   };
 
   const handleConfirm = () => {
-    console.log("Final booking confirmation");
-    alert("Booking Confirmed! (Frontend only - no backend)");
-    navigate("/");
+    setShowDialog(false);
+    setShowToast(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   return (
@@ -175,11 +180,38 @@ const BookingSummaryPage = () => {
         <Button
           large
           className="w-full bg-life-green"
-          onClick={handleConfirm}
+          onClick={() => setShowDialog(true)}
         >
           Confirm & Book Ambulance
         </Button>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        opened={showDialog}
+        onBackdropClick={() => setShowDialog(false)}
+        title="Confirm Booking"
+        content="Are you sure you want to book this ambulance? This is a demo - no actual ambulance will be dispatched."
+        buttons={
+          <>
+            <Button onClick={() => setShowDialog(false)}>Cancel</Button>
+            <Button strong onClick={handleConfirm}>Confirm</Button>
+          </>
+        }
+      />
+
+      {/* Success Toast */}
+      <Toast
+        position="center"
+        opened={showToast}
+        onClose={() => setShowToast(false)}
+      >
+        <div className="text-center py-2">
+          <CheckCircle className="w-12 h-12 text-life-green mx-auto mb-2" />
+          <div className="font-bold">Booking Confirmed!</div>
+          <div className="text-sm text-gray-600">Demo completed successfully</div>
+        </div>
+      </Toast>
     </Page>
   );
 };

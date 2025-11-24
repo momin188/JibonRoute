@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Page, Navbar, Block, List, ListInput, Button, Chip } from "konsta/react";
+import { Page, Navbar, Block, List, ListInput, Button, Chip, Toast } from "konsta/react";
 import { useNavigate } from "react-router-dom";
-import { Heart, Plus, X } from "lucide-react";
+import { Heart, Plus } from "lucide-react";
 
 const MedicalHistoryPage = () => {
   const navigate = useNavigate();
@@ -10,6 +10,7 @@ const MedicalHistoryPage = () => {
   const [medications, setMedications] = useState<string[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [inputType, setInputType] = useState<"allergy" | "condition" | "medication" | null>(null);
+  const [toastOpened, setToastOpened] = useState(false);
 
   const handleAddItem = () => {
     if (!currentInput.trim()) return;
@@ -38,7 +39,14 @@ const MedicalHistoryPage = () => {
 
   const handleSubmit = () => {
     console.log("Medical history:", { allergies, conditions, medications });
-    navigate("/profile");
+    setToastOpened(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
+  };
+
+  const handleSkip = () => {
+    navigate("/");
   };
 
   return (
@@ -209,12 +217,22 @@ const MedicalHistoryPage = () => {
             large
             outline
             className="w-full"
-            onClick={handleSubmit}
+            onClick={handleSkip}
           >
             Skip for Now
           </Button>
         </div>
       </Block>
+
+      <Toast
+        position="center"
+        opened={toastOpened}
+        onClose={() => setToastOpened(false)}
+      >
+        <div className="text-center">
+          ✓ Registration completed successfully!
+        </div>
+      </Toast>
     </Page>
   );
 };

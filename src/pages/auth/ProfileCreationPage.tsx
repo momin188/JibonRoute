@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Page, Navbar, Block, List, ListInput, Button, Card } from "konsta/react";
+import { Page, Navbar, Block, List, ListInput, Button, Card, Toast } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { User, Plus, X } from "lucide-react";
+import useAppStore from "@/store/useAppStore";
 
 interface EmergencyContact {
   name: string;
@@ -11,12 +12,15 @@ interface EmergencyContact {
 
 const ProfileCreationPage = () => {
   const navigate = useNavigate();
+  const login = useAppStore((state) => state.login);
+  
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [gender, setGender] = useState("");
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([]);
   const [showAddContact, setShowAddContact] = useState(false);
+  const [toastOpened, setToastOpened] = useState(false);
   const [newContact, setNewContact] = useState<EmergencyContact>({
     name: "",
     phone: "",
@@ -36,8 +40,19 @@ const ProfileCreationPage = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Profile data:", { name, age, bloodGroup, gender, emergencyContacts });
-    navigate("/auth/medical-history");
+    // Save user data to store
+    login({
+      name,
+      phone: "+880 1712345678", // From previous step
+      age: parseInt(age),
+      bloodGroup,
+      gender
+    });
+    
+    setToastOpened(true);
+    setTimeout(() => {
+      navigate("/auth/medical-history");
+    }, 1000);
   };
 
   return (
@@ -184,6 +199,16 @@ const ProfileCreationPage = () => {
           Continue
         </Button>
       </Block>
+
+      <Toast
+        position="center"
+        opened={toastOpened}
+        onClose={() => setToastOpened(false)}
+      >
+        <div className="text-center">
+          ✓ Profile created successfully!
+        </div>
+      </Toast>
     </Page>
   );
 };
