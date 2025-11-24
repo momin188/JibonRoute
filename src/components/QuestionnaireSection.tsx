@@ -1,4 +1,4 @@
-import { Card, List, ListItem, Radio, Range } from "konsta/react";
+import { Card, List, ListItem, Radio, Range as RangeSlider } from "konsta/react";
 
 interface Question {
   id: string;
@@ -46,7 +46,7 @@ const QuestionnaireSection = ({ questions, answers, onAnswerChange }: Questionna
               
               {question.type === "slider" && (
                 <div className="space-y-2">
-                  <Range
+                  <RangeSlider
                     value={Number(answers[question.id]) || question.min || 0}
                     min={question.min || 0}
                     max={question.max || 10}
