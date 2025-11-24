@@ -14,14 +14,14 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-safe left-safe right-safe z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/7e6fc9e8-3878-4142-9c3b-7fe6104e642e.png" 
-              alt="JibonRoute Logo" 
+            <img
+              src="/lovable-uploads/7e6fc9e8-3878-4142-9c3b-7fe6104e642e.png"
+              alt="JibonRoute Logo"
               className="h-12 w-auto"
             />
           </div>
@@ -35,7 +35,9 @@ const Header = () => {
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
                 onClick={(e) => {
                   e.preventDefault();
-                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                  document
+                    .querySelector(item.href)
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
                 {item.name}
@@ -45,11 +47,11 @@ const Header = () => {
 
           {/* Emergency Call Button */}
           <div className="hidden md:flex items-center gap-4">
-            <Button 
-              variant="emergency" 
-              size="sm" 
+            <Button
+              variant="emergency"
+              size="sm"
               className="gap-2"
-              onClick={() => window.open('tel:999', '_self')}
+              onClick={() => window.open("tel:999", "_self")}
             >
               <Phone className="w-4 h-4" />
               Emergency: 999
@@ -61,7 +63,11 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 text-foreground hover:text-primary"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
@@ -81,18 +87,20 @@ const Header = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsMenuOpen(false);
-                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                  document
+                    .querySelector(item.href)
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
                 {item.name}
               </a>
             ))}
             <div className="px-4 pt-2">
-              <Button 
-                variant="emergency" 
-                size="sm" 
+              <Button
+                variant="emergency"
+                size="sm"
                 className="w-full gap-2"
-                onClick={() => window.open('tel:999', '_self')}
+                onClick={() => window.open("tel:999", "_self")}
               >
                 <Phone className="w-4 h-4" />
                 Emergency: 999

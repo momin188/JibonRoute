@@ -5,13 +5,15 @@ import heroImage from "@/assets/hero-ambulance.jpg";
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,176,61,0.05)_50%,transparent_75%)] pointer-events-none"></div>
-      
+      {/* <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,176,61,0.05)_50%,transparent_75%)] pointer-events-none"></div> */}
+
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
           {/* Left Content */}
           <div className="space-y-8">
             <div className="space-y-4">
@@ -19,15 +21,16 @@ const HeroSection = () => {
                 <div className="w-2 h-2 bg-life-green rounded-full animate-pulse"></div>
                 Available 24/7 in Dhaka
               </div>
-              
+
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-                Emergency <span className="text-primary">Ambulance</span> at Your{" "}
-                <span className="text-life-green">Fingertips</span>
+                Emergency <span className="text-primary">Ambulance</span> at
+                Your <span className="text-life-green">Fingertips</span>
               </h1>
-              
+
               <p className="text-lg text-muted-foreground max-w-xl">
-                JibonRoute revolutionizes emergency medical services in Dhaka with AI-powered routing, 
-                real-time tracking, and instant hospital coordination. Your life's route to safety.
+                JibonRoute revolutionizes emergency medical services in Dhaka
+                with AI-powered routing, real-time tracking, and instant
+                hospital coordination. Your life's route to safety.
               </p>
             </div>
 
@@ -42,26 +45,38 @@ const HeroSection = () => {
                 <div className="text-sm text-muted-foreground">Available</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-emergency-glow">99%</div>
-                <div className="text-sm text-muted-foreground">Success Rate</div>
+                <div className="text-2xl font-bold text-emergency-glow">
+                  99%
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Success Rate
+                </div>
               </div>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                variant="emergency" 
-                size="lg" 
+              <Button
+                variant="emergency"
+                size="lg"
                 className="text-lg px-8"
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() =>
+                  document
+                    .getElementById("services")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
               >
                 Book Emergency Ambulance
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
+              <Button
+                variant="outline"
+                size="lg"
                 className="text-lg px-8"
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() =>
+                  document
+                    .getElementById("services")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
               >
                 Learn More
               </Button>
@@ -98,7 +113,7 @@ const HeroSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent rounded-2xl"></div>
             </div>
-            
+
             {/* Floating Stats Card */}
             <Card className="absolute -bottom-6 -left-6 p-4 bg-background/95 backdrop-blur-sm shadow-xl border-life-green/20">
               <div className="flex items-center gap-3">
@@ -107,7 +122,9 @@ const HeroSection = () => {
                 </div>
                 <div>
                   <div className="text-lg font-bold text-life-green">5 min</div>
-                  <div className="text-sm text-muted-foreground">Avg Response</div>
+                  <div className="text-sm text-muted-foreground">
+                    Avg Response
+                  </div>
                 </div>
               </div>
             </Card>
