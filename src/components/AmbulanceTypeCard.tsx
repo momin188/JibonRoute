@@ -1,5 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, Badge } from "konsta/react";
 import { Shield, Info } from "lucide-react";
 
 interface AmbulanceTypeCardProps {
@@ -28,19 +27,22 @@ const AmbulanceTypeCard = ({
 }: AmbulanceTypeCardProps) => {
   return (
     <Card 
-      className={`cursor-pointer transition-all duration-200 hover:shadow-md relative ${
+      className={`cursor-pointer transition-all duration-200 relative ${
         selected 
           ? 'ring-2 ring-life-green bg-life-green/5' 
-          : 'hover:bg-muted/50'
+          : ''
       }`}
       onClick={onClick}
     >
       {popular && (
-        <Badge className="absolute -top-2 left-4 bg-life-green text-white z-10">
+        <Badge 
+          className="absolute -top-2 left-4 z-10"
+          colors={{ bg: "bg-life-green", text: "text-white" }}
+        >
           Most Popular
         </Badge>
       )}
-      <CardContent className="p-0 overflow-hidden">
+      <div className="p-0 overflow-hidden">
         <div className="space-y-3">
           <div className="relative h-32 overflow-hidden">
             <img 
@@ -65,17 +67,17 @@ const AmbulanceTypeCard = ({
           <div className="p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-semibold text-foreground">{name}</h4>
-                <p className="text-sm text-muted-foreground">{description}</p>
+                <h4 className="font-semibold">{name}</h4>
+                <p className="text-sm text-gray-600">{description}</p>
               </div>
               <div className="text-right">
                 <div className="text-lg font-bold text-life-green">{price}</div>
-                <div className="text-xs text-muted-foreground">Estimated</div>
+                <div className="text-xs text-gray-600">Estimated</div>
               </div>
             </div>
             <div className="space-y-1">
               {features.slice(0, 3).map((feature, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
                   <Shield className="w-3 h-3 text-life-green" />
                   {feature}
                 </div>
@@ -83,7 +85,7 @@ const AmbulanceTypeCard = ({
             </div>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };

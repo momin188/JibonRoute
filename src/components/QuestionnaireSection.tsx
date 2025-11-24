@@ -1,7 +1,4 @@
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, List, ListItem, Radio, Range } from "konsta/react";
 
 interface Question {
   id: string;
@@ -23,39 +20,42 @@ const QuestionnaireSection = ({ questions, answers, onAnswerChange }: Questionna
     <div className="space-y-4">
       {questions.map((question) => (
         <Card key={question.id}>
-          <CardContent className="p-4">
+          <div className="p-4">
             <div className="space-y-3">
-              <Label className="text-base font-medium">{question.question}</Label>
+              <div className="text-base font-medium">{question.question}</div>
               
               {question.type === "radio" && question.options && (
-                <RadioGroup
-                  value={answers[question.id]?.toString()}
-                  onValueChange={(value) => onAnswerChange(question.id, value)}
-                >
+                <List strongIos outlineIos>
                   {question.options.map((option) => (
-                    <div key={option} className="flex items-center space-x-2">
-                      <RadioGroupItem value={option} id={`${question.id}-${option}`} />
-                      <Label htmlFor={`${question.id}-${option}`} className="font-normal cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
+                    <ListItem
+                      key={option}
+                      label
+                      title={option}
+                      media={
+                        <Radio
+                          component="div"
+                          value={option}
+                          checked={answers[question.id]?.toString() === option}
+                          onChange={() => onAnswerChange(question.id, option)}
+                        />
+                      }
+                    />
                   ))}
-                </RadioGroup>
+                </List>
               )}
               
               {question.type === "slider" && (
                 <div className="space-y-2">
-                  <Slider
-                    value={[Number(answers[question.id]) || question.min || 0]}
-                    onValueChange={(value) => onAnswerChange(question.id, value[0])}
+                  <Range
+                    value={Number(answers[question.id]) || question.min || 0}
                     min={question.min || 0}
                     max={question.max || 10}
                     step={1}
-                    className="w-full"
+                    onInput={(e) => onAnswerChange(question.id, Number(e.target.value))}
                   />
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between text-sm text-gray-600">
                     <span>{question.min || 0}</span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-medium text-gray-900">
                       {answers[question.id] || question.min || 0}
                     </span>
                     <span>{question.max || 10}</span>
@@ -63,7 +63,7 @@ const QuestionnaireSection = ({ questions, answers, onAnswerChange }: Questionna
                 </div>
               )}
             </div>
-          </CardContent>
+          </div>
         </Card>
       ))}
     </div>

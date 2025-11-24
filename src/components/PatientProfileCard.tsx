@@ -1,6 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { User, Heart, Phone, Calendar } from "lucide-react";
+import { Card, Badge } from "konsta/react";
+import { User, Heart, Calendar } from "lucide-react";
 
 interface PatientProfileCardProps {
   name: string;
@@ -23,24 +22,28 @@ const PatientProfileCard = ({
 }: PatientProfileCardProps) => {
   return (
     <Card 
-      className={`cursor-pointer transition-all hover:shadow-md ${isMain ? 'ring-2 ring-life-green' : ''}`}
+      className={`cursor-pointer transition-all ${isMain ? 'ring-2 ring-life-green' : ''}`}
       onClick={onClick}
     >
-      <CardContent className="p-4">
+      <div className="p-4">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
             {photo ? (
               <img src={photo} alt={name} className="w-full h-full object-cover" />
             ) : (
-              <User className="w-8 h-8 text-muted-foreground" />
+              <User className="w-8 h-8 text-gray-500" />
             )}
           </div>
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-foreground">{name}</h3>
-              {isMain && <Badge className="bg-life-green text-white">Primary</Badge>}
+              <h3 className="font-semibold">{name}</h3>
+              {isMain && (
+                <Badge colors={{ bg: "bg-life-green", text: "text-white" }}>
+                  Primary
+                </Badge>
+              )}
             </div>
-            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-3 text-sm text-gray-600">
               <span className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 {age} years
@@ -53,7 +56,7 @@ const PatientProfileCard = ({
             </div>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
