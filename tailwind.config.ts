@@ -14,6 +14,7 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/konsta/react/**/*.{js,ts,jsx,tsx,json}",
   ],
   prefix: "",
   theme: {
