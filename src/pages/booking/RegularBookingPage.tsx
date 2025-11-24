@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Page, Navbar, Block, List, ListInput, Button, Card, Segmented, SegmentedButton } from "konsta/react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Navigation, Search, Building2, Crosshair } from "lucide-react";
+import { Navigation, Building2, Crosshair } from "lucide-react";
 import AmbulanceTypeCard from "@/components/AmbulanceTypeCard";
 import QuestionnaireSection from "@/components/QuestionnaireSection";
 import basicAmbulanceImg from "@/assets/basic-ambulance.jpg";

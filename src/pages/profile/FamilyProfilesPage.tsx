@@ -1,22 +1,21 @@
-import { useState } from "react";
-import { Page, Navbar, Block, Button, List, ListItem } from "konsta/react";
+import { Page, Navbar, Block, Button } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { Users, Plus } from "lucide-react";
 import PatientProfileCard from "@/components/PatientProfileCard";
 
 const FamilyProfilesPage = () => {
   const navigate = useNavigate();
-  const [familyMembers] = useState([
+  const familyMembers = [
     { id: "1", name: "Jane Doe", age: 32, bloodGroup: "B+", gender: "female", isMain: false },
     { id: "2", name: "Jimmy Doe", age: 8, bloodGroup: "A+", gender: "male", isMain: false },
     { id: "3", name: "Jenny Doe", age: 5, bloodGroup: "O+", gender: "female", isMain: false }
-  ]);
+  ];
 
   return (
     <Page>
       <Navbar 
         title="Family Profiles" 
-        left={<button onClick={() => navigate(-1)}>Back</button>}
+        left={<button onClick={() => navigate(-1)} aria-label="Go back">Back</button>}
       />
       
       <Block className="mt-4 space-y-4">

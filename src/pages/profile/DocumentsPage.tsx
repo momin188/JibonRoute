@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Page, Navbar, Block, Button, Card } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { FileText, Upload, Eye, Trash2, Download } from "lucide-react";
@@ -13,7 +12,7 @@ interface Document {
 
 const DocumentsPage = () => {
   const navigate = useNavigate();
-  const [documents] = useState<Document[]>([
+  const documents: Document[] = [
     {
       id: "1",
       name: "Blood Test Report",
@@ -42,7 +41,7 @@ const DocumentsPage = () => {
       date: "2023-11-05",
       size: "0.8 MB"
     }
-  ]);
+  ];
 
   const handleUpload = () => {
     console.log("Upload document - Frontend only");

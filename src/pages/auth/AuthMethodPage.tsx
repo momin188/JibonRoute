@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Page, Navbar, Block, List, ListButton, Card } from "konsta/react";
+import { Page, Navbar, Block, ListButton, Card } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { Phone, Mail, UserPlus } from "lucide-react";
 

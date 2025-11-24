@@ -14,12 +14,12 @@ const Index = () => {
           title="JibonRoute"
           subtitle="Emergency Medical Services"
           left={
-            <button onClick={() => setLeftPanelOpened(true)} className="p-2">
+            <button onClick={() => setLeftPanelOpened(true)} className="p-2" aria-label="Open menu">
               <Menu className="w-6 h-6" />
             </button>
           }
           right={
-            <button onClick={() => navigate("/profile")} className="p-2">
+            <button onClick={() => navigate("/profile")} className="p-2" aria-label="View profile">
               <User className="w-6 h-6" />
             </button>
           }

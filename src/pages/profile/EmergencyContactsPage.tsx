@@ -32,7 +32,6 @@ const EmergencyContactsPage = () => {
     }
   ]);
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [editingContact, setEditingContact] = useState<EmergencyContact | null>(null);
 
   const handleDeleteContact = (id: string) => {
     setContacts(contacts.filter(c => c.id !== id));

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Page, Navbar, Block, Button, Card, List, ListItem, Dialog, Toast } from "konsta/react";
+import { Page, Navbar, Block, Button, Card, Dialog, Toast } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Building2, Truck, CreditCard, Edit, CheckCircle } from "lucide-react";
 

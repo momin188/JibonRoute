@@ -1,6 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, List, ListItem, Button, Badge } from "konsta/react";
 import { Phone, Mail, User, Edit, Trash2 } from "lucide-react";
 
 interface EmergencyContact {
@@ -23,16 +21,18 @@ const EmergencyContactList = ({ contacts, onEdit, onDelete }: EmergencyContactLi
     <div className="space-y-3">
       {contacts.map((contact) => (
         <Card key={contact.id}>
-          <CardContent className="p-4">
+          <div className="p-4">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 space-y-2">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-semibold text-foreground">{contact.name}</h4>
+                  <h4 className="font-semibold">{contact.name}</h4>
                   {contact.autoNotify && (
-                    <Badge variant="secondary" className="text-xs">Auto-notify</Badge>
+                    <Badge colors={{ bg: "bg-gray-100", text: "text-gray-800" }}>
+                      Auto-notify
+                    </Badge>
                   )}
                 </div>
-                <div className="space-y-1 text-sm text-muted-foreground">
+                <div className="space-y-1 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
                     <span className="capitalize">{contact.relationship}</span>
@@ -51,22 +51,23 @@ const EmergencyContactList = ({ contacts, onEdit, onDelete }: EmergencyContactLi
               </div>
               <div className="flex gap-2">
                 <Button
-                  variant="ghost"
-                  size="sm"
+                  outline
+                  small
                   onClick={() => onEdit(contact)}
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
                 <Button
-                  variant="ghost"
-                  size="sm"
+                  outline
+                  small
                   onClick={() => onDelete(contact.id)}
+                  className="text-red-600"
                 >
-                  <Trash2 className="w-4 h-4 text-destructive" />
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
       ))}
     </div>

@@ -51,7 +51,7 @@ const QuestionnaireSection = ({ questions, answers, onAnswerChange }: Questionna
                     min={question.min || 0}
                     max={question.max || 10}
                     step={1}
-                    onInput={(e) => onAnswerChange(question.id, Number(e.target.value))}
+                    onChange={(e) => onAnswerChange(question.id, Number(e.target.value))}
                   />
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>{question.min || 0}</span>

@@ -32,7 +32,7 @@ interface AppStore {
   } | null;
   
   // Booking actions
-  updateBooking: (updates: any) => void;
+  updateBooking: (updates: Partial<AppStore['currentBooking']>) => void;
   clearBooking: () => void;
   confirmBooking: () => void;
 }
@@ -52,7 +52,7 @@ const useAppStore = create<AppStore>((set) => ({
   
   // Booking actions
   updateBooking: (updates) => set((state) => ({
-    currentBooking: { ...state.currentBooking, ...updates }
+    currentBooking: state.currentBooking ? { ...state.currentBooking, ...updates } : { ...updates }
   })),
   clearBooking: () => set({ currentBooking: null }),
   confirmBooking: () => {
