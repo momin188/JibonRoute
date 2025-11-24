@@ -10,10 +10,6 @@ const config: CapacitorConfig = {
       overlaysWebView: true,
     },
   },
-  server: {
-    url: "http://192.168.0.103:8080",
-    cleartext: true,
-  },
 };
 
 export default config;
