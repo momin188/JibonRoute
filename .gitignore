@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+/build/
 dist-ssr
 *.local
 
@@ -23,74 +24,4 @@ dist-ssr
 *.sln
 *.sw?
 
-
-# Node modules
-/node_modules
-
-# Build output
-/www
-/dist
-/build
-
-# Capacitor platforms
-/android
-/ios
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# IDE-specific files
-.idea/
-.vscode/
-
-# Log files
-*.log
-
-# Dependency lock files (optional, depending on your setup)
-package-lock.json
-yarn.lock
-
-# Specific to Android platform
-# Built application files
-*.apk
-*.ap_
-# Files for the ART/Dalvik VM
-*.dex
-# Java class files
-*.class
-# Generated files
-bin/
-gen/
-# Local configuration file (sdk path, etc)
-local.properties
-# Gradle files
-.gradle/
-build/
-# External native build. You may need to ignore this if you are using NDK
-.externalNativeBuild/
-# Android Studio
-.idea/workspace.xml
-.idea/libraries/
-# Keystore files
-*.keystore
 *.jks
-
-# Specific to iOS platform
-# Xcode
-.DS_Store
-xcuserdata/
-DerivedData/
-*.xcarchive
-*.ipa
-*.app
-# CocoaPods
-Pods/
-# Carthage
-Carthage/Build/
-# Swift Package Manager
-.swiftpm/
-
-# Capacitor specific files (if not already covered by platform ignores)
-capacitor.config.json.bak
