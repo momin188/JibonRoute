@@ -1,3 +1,5 @@
+/// <reference types="@capacitor/app" />
+
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
@@ -6,6 +8,9 @@ const config: CapacitorConfig = {
   webDir: "dist",
   android: {},
   plugins: {
+    App: {
+      // disableBackButtonHandler: true,
+    },
     StatusBar: {
       overlaysWebView: true,
     },
