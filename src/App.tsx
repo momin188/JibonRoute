@@ -12,12 +12,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 // Auth pages
-import AuthMethodPage from "./pages/auth/RegisterPage";
-import PhoneRegistrationPage from "./pages/auth/PhoneRegistrationPage";
-import EmailRegistrationPage from "./pages/auth/EmailRegistrationPage";
-import ProfileCreationPage from "./pages/auth/ProfileCreationPage";
-import MedicalHistoryPage from "./pages/auth/MedicalHistoryPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import LoginPage from "./pages/auth/LoginPage";
 
 // Profile pages
 import ProfilePage from "./pages/profile/ProfilePage";
@@ -29,7 +25,6 @@ import DocumentsPage from "./pages/profile/DocumentsPage";
 import BookingHomePage from "./pages/booking/BookingHomePage";
 import RegularBookingPage from "./pages/booking/RegularBookingPage";
 import BookingSummaryPage from "./pages/booking/BookingSummaryPage";
-import LoginPage from "./pages/auth/LoginPage";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -71,9 +66,9 @@ function Router() {
 
       {/* Auth Routes */}
       <Route path="/auth">
-        <Route index element={<Navigate to="/auth/register" replace />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="*" element={<Navigate to="/auth/register" replace />} />
         {/* <Route path="email" element={<EmailRegistrationPage />} />
               <Route
                 path="profile-creation"
