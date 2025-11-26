@@ -1,6 +1,7 @@
 /// <reference types="@capacitor/app" />
 
 import type { CapacitorConfig } from "@capacitor/cli";
+import { KeyboardResize } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
   appId: "com.jibonroute.app",
@@ -13,6 +14,10 @@ const config: CapacitorConfig = {
     },
     StatusBar: {
       overlaysWebView: true,
+    },
+    Keyboard: {
+      resize: KeyboardResize.Body,
+      resizeOnFullScreen: true,
     },
   },
 };
