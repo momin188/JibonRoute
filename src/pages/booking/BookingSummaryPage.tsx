@@ -1,7 +1,23 @@
 import { useState } from "react";
-import { Page, Navbar, Block, Button, Card, Dialog, Toast } from "konsta/react";
+import {
+  Page,
+  Navbar,
+  Block,
+  Button,
+  Card,
+  Dialog,
+  Toast,
+  Link,
+} from "konsta/react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Building2, Truck, CreditCard, Edit, CheckCircle } from "lucide-react";
+import {
+  MapPin,
+  Building2,
+  Truck,
+  CreditCard,
+  Edit,
+  CheckCircle,
+} from "lucide-react";
 
 const BookingSummaryPage = () => {
   const navigate = useNavigate();
@@ -20,8 +36,8 @@ const BookingSummaryPage = () => {
     patientCondition: {
       consciousness: "Fully conscious",
       breathing: "5/10",
-      pain: "7/10"
-    }
+      pain: "7/10",
+    },
   };
 
   const handleConfirm = () => {
@@ -34,16 +50,18 @@ const BookingSummaryPage = () => {
 
   return (
     <Page>
-      <Navbar 
-        title="Booking Summary" 
-        left={<button onClick={() => navigate(-1)}>Back</button>}
+      <Navbar
+        title="Booking Summary"
+        left={<Link onClick={() => navigate(-1)}>Back</Link>}
       />
-      
+
       <Block className="mt-4 pb-24 space-y-4">
         <div className="text-center mb-6">
           <CheckCircle className="w-16 h-16 text-life-green mx-auto mb-3" />
           <h2 className="text-2xl font-bold mb-2">Review Your Booking</h2>
-          <p className="text-gray-600">Please verify all details before confirming</p>
+          <p className="text-gray-600">
+            Please verify all details before confirming
+          </p>
         </div>
 
         {/* Pickup Location */}
@@ -56,12 +74,9 @@ const BookingSummaryPage = () => {
                 <p className="text-sm text-gray-600">{bookingDetails.pickup}</p>
               </div>
             </div>
-            <button 
-              onClick={() => navigate("/booking/regular")}
-              className="text-life-green"
-            >
-              <Edit className="w-5 h-5" />
-            </button>
+            <Link onClick={() => navigate("/booking/regular")} iconOnly>
+              <Edit className="w-5 h-5 text-life-green" />
+            </Link>
           </div>
         </Card>
 
@@ -72,16 +87,17 @@ const BookingSummaryPage = () => {
               <Building2 className="w-5 h-5 text-life-green mt-1" />
               <div className="flex-1">
                 <h3 className="font-semibold mb-1">Destination</h3>
-                <p className="text-sm font-medium">{bookingDetails.destination}</p>
-                <p className="text-sm text-gray-600">{bookingDetails.destinationAddress}</p>
+                <p className="text-sm font-medium">
+                  {bookingDetails.destination}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {bookingDetails.destinationAddress}
+                </p>
               </div>
             </div>
-            <button 
-              onClick={() => navigate("/booking/regular")}
-              className="text-life-green"
-            >
-              <Edit className="w-5 h-5" />
-            </button>
+            <Link onClick={() => navigate("/booking/regular")} iconOnly>
+              <Edit className="w-5 h-5 text-life-green" />
+            </Link>
           </div>
         </Card>
 
@@ -92,18 +108,17 @@ const BookingSummaryPage = () => {
               <Truck className="w-5 h-5 text-life-green mt-1" />
               <div className="flex-1">
                 <h3 className="font-semibold mb-1">Ambulance Type</h3>
-                <p className="text-sm text-gray-600">{bookingDetails.ambulanceType}</p>
+                <p className="text-sm text-gray-600">
+                  {bookingDetails.ambulanceType}
+                </p>
                 <p className="text-sm font-semibold text-life-green mt-1">
                   {bookingDetails.ambulancePrice}
                 </p>
               </div>
             </div>
-            <button 
-              onClick={() => navigate("/booking/regular")}
-              className="text-life-green"
-            >
-              <Edit className="w-5 h-5" />
-            </button>
+            <Link onClick={() => navigate("/booking/regular")} iconOnly>
+              <Edit className="w-5 h-5 text-life-green" />
+            </Link>
           </div>
         </Card>
 
@@ -115,24 +130,27 @@ const BookingSummaryPage = () => {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Consciousness:</span>
-                  <span className="font-medium">{bookingDetails.patientCondition.consciousness}</span>
+                  <span className="font-medium">
+                    {bookingDetails.patientCondition.consciousness}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Breathing Difficulty:</span>
-                  <span className="font-medium">{bookingDetails.patientCondition.breathing}</span>
+                  <span className="font-medium">
+                    {bookingDetails.patientCondition.breathing}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Pain Level:</span>
-                  <span className="font-medium">{bookingDetails.patientCondition.pain}</span>
+                  <span className="font-medium">
+                    {bookingDetails.patientCondition.pain}
+                  </span>
                 </div>
               </div>
             </div>
-            <button 
-              onClick={() => navigate("/booking/regular")}
-              className="text-life-green"
-            >
-              <Edit className="w-5 h-5" />
-            </button>
+            <Link onClick={() => navigate("/booking/regular")} iconOnly>
+              <Edit className="w-5 h-5 text-life-green" />
+            </Link>
           </div>
         </Card>
 
@@ -143,15 +161,14 @@ const BookingSummaryPage = () => {
               <CreditCard className="w-5 h-5 text-life-green mt-1" />
               <div className="flex-1">
                 <h3 className="font-semibold mb-1">Payment Method</h3>
-                <p className="text-sm text-gray-600">{bookingDetails.paymentMethod}</p>
+                <p className="text-sm text-gray-600">
+                  {bookingDetails.paymentMethod}
+                </p>
               </div>
             </div>
-            <button 
-              onClick={() => navigate("/booking/regular")}
-              className="text-life-green"
-            >
-              <Edit className="w-5 h-5" />
-            </button>
+            <Link onClick={() => navigate("/booking/regular")} iconOnly>
+              <Edit className="w-5 h-5 text-life-green" />
+            </Link>
           </div>
         </Card>
 
@@ -161,11 +178,15 @@ const BookingSummaryPage = () => {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-gray-600">Estimated Fare</span>
-              <span className="font-bold text-life-green text-lg">{bookingDetails.estimatedFare}</span>
+              <span className="font-bold text-life-green text-lg">
+                {bookingDetails.estimatedFare}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Estimated Arrival</span>
-              <span className="font-semibold">{bookingDetails.estimatedTime}</span>
+              <span className="font-semibold">
+                {bookingDetails.estimatedTime}
+              </span>
             </div>
           </div>
         </Card>
@@ -195,7 +216,9 @@ const BookingSummaryPage = () => {
         buttons={
           <>
             <Button onClick={() => setShowDialog(false)}>Cancel</Button>
-            <Button strong onClick={handleConfirm}>Confirm</Button>
+            <Button strong onClick={handleConfirm}>
+              Confirm
+            </Button>
           </>
         }
       />
@@ -209,7 +232,9 @@ const BookingSummaryPage = () => {
         <div className="text-center py-2">
           <CheckCircle className="w-12 h-12 text-life-green mx-auto mb-2" />
           <div className="font-bold">Booking Confirmed!</div>
-          <div className="text-sm text-gray-600">Demo completed successfully</div>
+          <div className="text-sm text-gray-600">
+            Demo completed successfully
+          </div>
         </div>
       </Toast>
     </Page>

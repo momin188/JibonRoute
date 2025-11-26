@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Page, Navbar, Block, List, ListInput, Button, Card, Segmented, SegmentedButton } from "konsta/react";
+import {
+  Page,
+  Navbar,
+  Block,
+  List,
+  ListInput,
+  Button,
+  Card,
+  Segmented,
+  SegmentedButton,
+  Link,
+} from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { Navigation, Building2, Crosshair } from "lucide-react";
 import AmbulanceTypeCard from "@/components/AmbulanceTypeCard";
@@ -12,10 +23,12 @@ import icuAmbulanceImg from "@/assets/icu-ambulance.jpg";
 const RegularBookingPage = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  
+
   // Step 1: Location
   const [pickupLocation, setPickupLocation] = useState("");
-  const [destinationType, setDestinationType] = useState<"hospital" | "nearest" | "custom">("hospital");
+  const [destinationType, setDestinationType] = useState<
+    "hospital" | "nearest" | "custom"
+  >("hospital");
   const [selectedHospital, setSelectedHospital] = useState("");
   const [customDestination, setCustomDestination] = useState("");
 
@@ -23,7 +36,9 @@ const RegularBookingPage = () => {
   const [selectedAmbulance, setSelectedAmbulance] = useState("");
 
   // Step 3: Patient Condition
-  const [questionAnswers, setQuestionAnswers] = useState<Record<string, string | number>>({});
+  const [questionAnswers, setQuestionAnswers] = useState<
+    Record<string, string | number>
+  >({});
 
   // Step 4: Payment
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -50,14 +65,18 @@ const RegularBookingPage = () => {
       price: "৳2500",
       features: ["Air conditioning", "Basic life support", "Oxygen supply"],
       image: acAmbulanceImg,
-      popular: true
+      popular: true,
     },
     {
       id: "paramedic",
       name: "Paramedic Ambulance",
       description: "Advanced medical support",
       price: "৳3500",
-      features: ["Trained paramedic", "Advanced equipment", "Emergency medications"],
+      features: [
+        "Trained paramedic",
+        "Advanced equipment",
+        "Emergency medications",
+      ],
       image: paramedicAmbulanceImg,
     },
     {
@@ -67,7 +86,7 @@ const RegularBookingPage = () => {
       price: "৳6000",
       features: ["ICU equipment", "Ventilator", "Cardiac monitor"],
       image: icuAmbulanceImg,
-    }
+    },
   ];
 
   const conditionQuestions = [
@@ -75,22 +94,22 @@ const RegularBookingPage = () => {
       id: "consciousness",
       question: "Is the patient conscious?",
       type: "radio" as const,
-      options: ["Fully conscious", "Drowsy", "Unconscious"]
+      options: ["Fully conscious", "Drowsy", "Unconscious"],
     },
     {
       id: "breathing",
       question: "Breathing difficulty level",
       type: "slider" as const,
       min: 0,
-      max: 10
+      max: 10,
     },
     {
       id: "pain",
       question: "Pain level (0-10)",
       type: "slider" as const,
       min: 0,
-      max: 10
-    }
+      max: 10,
+    },
   ];
 
   const handleNext = () => {
@@ -110,17 +129,18 @@ const RegularBookingPage = () => {
       customDestination,
       selectedAmbulance,
       questionAnswers,
-      paymentMethod
+      paymentMethod,
     });
     navigate("/booking/summary");
   };
 
   const canProceed = () => {
     if (step === 1) {
-      return pickupLocation && (
-        (destinationType === "hospital" && selectedHospital) ||
-        (destinationType === "custom" && customDestination) ||
-        destinationType === "nearest"
+      return (
+        pickupLocation &&
+        ((destinationType === "hospital" && selectedHospital) ||
+          (destinationType === "custom" && customDestination) ||
+          destinationType === "nearest")
       );
     }
     if (step === 2) return selectedAmbulance;
@@ -131,11 +151,11 @@ const RegularBookingPage = () => {
 
   return (
     <Page>
-      <Navbar 
+      <Navbar
         title={`Book Ambulance (${step}/4)`}
-        left={<button onClick={handleBack}>Back</button>}
+        left={<Link onClick={handleBack}>Back</Link>}
       />
-      
+
       <Block className="mt-4 pb-24">
         {/* Progress indicator */}
         <div className="flex gap-2 mb-6">
@@ -203,7 +223,9 @@ const RegularBookingPage = () => {
                     <Card
                       key={hospital.id}
                       className={`p-3 cursor-pointer ${
-                        selectedHospital === hospital.id ? "ring-2 ring-life-green" : ""
+                        selectedHospital === hospital.id
+                          ? "ring-2 ring-life-green"
+                          : ""
                       }`}
                       onClick={() => setSelectedHospital(hospital.id)}
                     >
@@ -212,7 +234,9 @@ const RegularBookingPage = () => {
                           <Building2 className="w-5 h-5 text-life-green" />
                           <div>
                             <div className="font-semibold">{hospital.name}</div>
-                            <div className="text-sm text-gray-600">{hospital.distance}</div>
+                            <div className="text-sm text-gray-600">
+                              {hospital.distance}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -262,7 +286,9 @@ const RegularBookingPage = () => {
                   {...ambulance}
                   selected={selectedAmbulance === ambulance.id}
                   onClick={() => setSelectedAmbulance(ambulance.id)}
-                  onInfoClick={() => console.log("Show details for", ambulance.name)}
+                  onInfoClick={() =>
+                    console.log("Show details for", ambulance.name)
+                  }
                 />
               ))}
             </div>
@@ -328,7 +354,9 @@ const RegularBookingPage = () => {
                 </div>
                 <div className="flex justify-between pt-2 border-t">
                   <span className="font-semibold">Estimated Total</span>
-                  <span className="font-bold text-life-green text-lg">৳1700 - ৳2000</span>
+                  <span className="font-bold text-life-green text-lg">
+                    ৳1700 - ৳2000
+                  </span>
                 </div>
                 <div className="text-sm text-gray-600 mt-2">
                   <span className="font-semibold">ETA:</span> 8-12 minutes

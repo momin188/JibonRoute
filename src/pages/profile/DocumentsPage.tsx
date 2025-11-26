@@ -1,4 +1,4 @@
-import { Page, Navbar, Block, Button, Card } from "konsta/react";
+import { Page, Navbar, Block, Button, Card, Link } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { FileText, Upload, Eye, Trash2, Download } from "lucide-react";
 
@@ -18,29 +18,29 @@ const DocumentsPage = () => {
       name: "Blood Test Report",
       type: "Lab Report",
       date: "2024-01-15",
-      size: "2.5 MB"
+      size: "2.5 MB",
     },
     {
       id: "2",
       name: "Prescription - Dr. Ahmed",
       type: "Prescription",
       date: "2024-01-10",
-      size: "1.2 MB"
+      size: "1.2 MB",
     },
     {
       id: "3",
       name: "X-Ray Chest",
       type: "Imaging",
       date: "2023-12-20",
-      size: "4.8 MB"
+      size: "4.8 MB",
     },
     {
       id: "4",
       name: "Vaccination Certificate",
       type: "Certificate",
       date: "2023-11-05",
-      size: "0.8 MB"
-    }
+      size: "0.8 MB",
+    },
   ];
 
   const handleUpload = () => {
@@ -61,16 +61,18 @@ const DocumentsPage = () => {
 
   return (
     <Page>
-      <Navbar 
-        title="Medical Documents" 
-        left={<button onClick={() => navigate(-1)}>Back</button>}
+      <Navbar
+        title="Medical Documents"
+        left={<Link onClick={() => navigate(-1)}>Back</Link>}
       />
-      
+
       <Block className="mt-4 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">My Documents</h2>
-            <p className="text-sm text-gray-600">Prescriptions, reports, and records</p>
+            <p className="text-sm text-gray-600">
+              Prescriptions, reports, and records
+            </p>
           </div>
           <Button onClick={handleUpload}>
             <Upload className="w-4 h-4 mr-1" />
@@ -102,7 +104,7 @@ const DocumentsPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex gap-2 mt-4">
                 <Button
                   small
@@ -121,12 +123,13 @@ const DocumentsPage = () => {
                   <Download className="w-4 h-4 mr-1" />
                   Download
                 </Button>
-                <button
+                <Link
                   onClick={() => handleDelete(doc.id)}
-                  className="px-3 text-red-500"
+                  iconOnly
+                  className="px-3"
                 >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                  <Trash2 className="w-5 h-5 text-red-500" />
+                </Link>
               </div>
             </Card>
           ))}

@@ -1,127 +1,242 @@
 import { useState } from "react";
-import { Page, Navbar, Block, Button, List, ListItem, Tabbar, TabbarLink } from "konsta/react";
+import {
+  Page,
+  Navbar,
+  Block,
+  Button,
+  List,
+  ListItem,
+  Dialog,
+  Link,
+} from "konsta/react";
 import { useNavigate } from "react-router-dom";
-import { User, Users, Phone, FileText, Heart, Home, Calendar } from "lucide-react";
-import PatientProfileCard from "@/components/PatientProfileCard";
+import {
+  User,
+  Users,
+  Phone,
+  FileText,
+  Heart,
+  Edit,
+  LogOut,
+  Settings,
+  ChevronRight,
+} from "lucide-react";
+import useAppStore from "@/store/useAppStore";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("home");
+  const { user, logout } = useAppStore();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
-  const mainProfile = {
-    name: "John Doe",
-    age: 35,
-    bloodGroup: "A+",
-    gender: "male",
-    isMain: true
+  if (!user) {
+    navigate("/auth/login");
+    return null;
+  }
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
   };
 
-  const familyProfiles = [
-    { id: "1", name: "Jane Doe", age: 32, bloodGroup: "B+", gender: "female" },
-    { id: "2", name: "Jimmy Doe", age: 8, bloodGroup: "A+", gender: "male" }
-  ];
+  return (
+    <Page>
+      <Navbar
+        title="My Profile"
+        left={<Link onClick={() => navigate(-1)}>Back</Link>}
+      />
 
-  const renderContent = () => {
-    if (activeTab === "profile") {
-      return (
-        <Block className="mt-4 space-y-4">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold mb-2">My Profile</h2>
-            <p className="text-gray-600">Manage your personal information</p>
+      <Block className="mt-4 pb-24 space-y-6">
+        {/* Profile Header */}
+        <div className="bg-linear-to-br from-life-green to-green-600 rounded-3xl p-6 text-white">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                <User className="w-10 h-10" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold">{user.name || "User"}</h2>
+                <p className="text-white/80">{user.phone || user.email}</p>
+              </div>
+            </div>
+            <Link
+              onClick={() => navigate("/profile/edit")}
+              iconOnly
+              className="p-2 bg-white/20 rounded-lg hover:bg-white/30"
+            >
+              <Edit className="w-5 h-5" />
+            </Link>
           </div>
 
-          <div className="mb-4">
-            <h3 className="font-semibold mb-3">Primary Profile</h3>
-            <PatientProfileCard {...mainProfile} />
+          <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="bg-white/10 rounded-lg p-3 text-center">
+              <p className="text-white/70 text-xs mb-1">Age</p>
+              <p className="text-lg font-bold">{user.age || "-"}</p>
+            </div>
+            <div className="bg-white/10 rounded-lg p-3 text-center">
+              <p className="text-white/70 text-xs mb-1">Blood</p>
+              <p className="text-lg font-bold">{user.bloodGroup || "-"}</p>
+            </div>
+            <div className="bg-white/10 rounded-lg p-3 text-center">
+              <p className="text-white/70 text-xs mb-1">Gender</p>
+              <p className="text-lg font-bold">{user.gender || "-"}</p>
+            </div>
           </div>
+        </div>
 
+        {/* Medical Information */}
+        <div>
+          <h3 className="text-lg font-semibold mb-3 px-2">
+            Medical Information
+          </h3>
           <List strongIos outlineIos>
             <ListItem
               link
               chevron
               onClick={() => navigate("/profile/medical-history")}
               title="Medical History"
-              media={<Heart className="w-6 h-6 text-life-green" />}
-              after="Allergies, Conditions, Medications"
+              media={
+                <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-red-500" />
+                </div>
+              }
+              after={
+                <span className="text-sm text-gray-500">
+                  {user.medicalHistory?.allergies?.length || 0} allergies
+                </span>
+              }
             />
             <ListItem
               link
               chevron
               onClick={() => navigate("/profile/emergency-contacts")}
               title="Emergency Contacts"
-              media={<Phone className="w-6 h-6 text-life-green" />}
-              after={`${3} contacts`}
+              media={
+                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-blue-500" />
+                </div>
+              }
+              after={
+                <span className="text-sm text-gray-500">
+                  {user.emergencyContacts?.length || 0} contacts
+                </span>
+              }
+            />
+          </List>
+        </div>
+
+        {/* Family & Documents */}
+        <div>
+          <h3 className="text-lg font-semibold mb-3 px-2">
+            Family & Documents
+          </h3>
+          <List strongIos outlineIos>
+            <ListItem
+              link
+              chevron
+              onClick={() => navigate("/profile/family")}
+              title="Family Profiles"
+              media={
+                <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-purple-500" />
+                </div>
+              }
+              after={
+                <span className="text-sm text-gray-500">Manage family</span>
+              }
             />
             <ListItem
               link
               chevron
               onClick={() => navigate("/profile/documents")}
               title="Medical Documents"
-              media={<FileText className="w-6 h-6 text-life-green" />}
-              after={`${5} documents`}
+              media={
+                <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-green-500" />
+                </div>
+              }
+              after={
+                <span className="text-sm text-gray-500">
+                  Prescriptions & Reports
+                </span>
+              }
             />
+          </List>
+        </div>
+
+        {/* Settings */}
+        <div>
+          <h3 className="text-lg font-semibold mb-3 px-2">Settings</h3>
+          <List strongIos outlineIos>
             <ListItem
               link
               chevron
-              onClick={() => navigate("/profile/family")}
-              title="Family Profiles"
-              media={<Users className="w-6 h-6 text-life-green" />}
-              after={`${familyProfiles.length} members`}
+              onClick={() => navigate("/settings")}
+              title="App Settings"
+              media={
+                <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-gray-500" />
+                </div>
+              }
+            />
+            <ListItem
+              link
+              onClick={() => setShowLogoutDialog(true)}
+              title="Logout"
+              media={
+                <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+                  <LogOut className="w-5 h-5 text-red-500" />
+                </div>
+              }
+              className="text-red-500"
             />
           </List>
-        </Block>
-      );
-    }
-
-    return (
-      <Block className="mt-4">
-        <div className="text-center py-20">
-          <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold mb-2">Welcome to JibonRoute</h2>
-          <p className="text-gray-600">Your emergency ambulance service</p>
-          <Button
-            large
-            className="mt-6"
-            onClick={() => navigate("/booking")}
-          >
-            Book Emergency Ambulance
-          </Button>
         </div>
       </Block>
-    );
-  };
 
-  return (
-    <Page>
-      <Navbar title="JibonRoute" />
-      
-      {renderContent()}
-
-      <Tabbar labels icons className="left-0 bottom-0 fixed">
-        <TabbarLink
-          active={activeTab === "home"}
-          onClick={() => setActiveTab("home")}
-          icon={<Home className="w-6 h-6" />}
-          label="Home"
-        />
-        <TabbarLink
-          active={activeTab === "booking"}
-          onClick={() => {
-            setActiveTab("booking");
-            navigate("/booking");
-          }}
-          icon={<Calendar className="w-6 h-6" />}
-          label="Booking"
-        />
-        <TabbarLink
-          active={activeTab === "profile"}
-          onClick={() => setActiveTab("profile")}
-          icon={<User className="w-6 h-6" />}
-          label="Profile"
-        />
-      </Tabbar>
+      {/* Logout Dialog */}
+      <Dialog
+        opened={showLogoutDialog}
+        onBackdropClick={() => setShowLogoutDialog(false)}
+        title="Logout"
+        content="Are you sure you want to logout?"
+        buttons={
+          <>
+            <Button onClick={() => setShowLogoutDialog(false)}>Cancel</Button>
+            <Button onClick={handleLogout} className="text-red-500">
+              Logout
+            </Button>
+          </>
+        }
+      />
     </Page>
   );
 };
 
 export default ProfilePage;
+//         <TabbarLink
+//           active={activeTab === "home"}
+//           onClick={() => setActiveTab("home")}
+//           icon={<Home className="w-6 h-6" />}
+//           label="Home"
+//         />
+//         <TabbarLink
+//           active={activeTab === "booking"}
+//           onClick={() => {
+//             setActiveTab("booking");
+//             navigate("/booking");
+//           }}
+//           icon={<Calendar className="w-6 h-6" />}
+//           label="Booking"
+//         />
+//         <TabbarLink
+//           active={activeTab === "profile"}
+//           onClick={() => setActiveTab("profile")}
+//           icon={<User className="w-6 h-6" />}
+//           label="Profile"
+//         />
+//       </Tabbar>
+//     </Page>
+//   );
+// };
+
+// export default ProfilePage;

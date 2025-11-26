@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { Page, Navbar, Block, Button, List, ListInput, Toggle, Card } from "konsta/react";
+import {
+  Page,
+  Navbar,
+  Block,
+  Button,
+  List,
+  ListInput,
+  Toggle,
+  Card,
+  Link,
+} from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { Phone, Plus, Edit, Trash2 } from "lucide-react";
 
@@ -21,40 +31,44 @@ const EmergencyContactsPage = () => {
       relationship: "spouse",
       phone: "+880 1712345678",
       email: "jane@example.com",
-      autoNotify: true
+      autoNotify: true,
     },
     {
       id: "2",
       name: "Robert Doe",
       relationship: "parent",
       phone: "+880 1812345678",
-      autoNotify: false
-    }
+      autoNotify: false,
+    },
   ]);
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   const handleDeleteContact = (id: string) => {
-    setContacts(contacts.filter(c => c.id !== id));
+    setContacts(contacts.filter((c) => c.id !== id));
   };
 
   const handleToggleAutoNotify = (id: string) => {
-    setContacts(contacts.map(c => 
-      c.id === id ? { ...c, autoNotify: !c.autoNotify } : c
-    ));
+    setContacts(
+      contacts.map((c) =>
+        c.id === id ? { ...c, autoNotify: !c.autoNotify } : c
+      )
+    );
   };
 
   return (
     <Page>
-      <Navbar 
-        title="Emergency Contacts" 
-        left={<button onClick={() => navigate(-1)}>Back</button>}
+      <Navbar
+        title="Emergency Contacts"
+        left={<Link onClick={() => navigate(-1)}>Back</Link>}
       />
-      
+
       <Block className="mt-4 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">Emergency Contacts</h2>
-            <p className="text-sm text-gray-600">People to notify in emergencies</p>
+            <p className="text-sm text-gray-600">
+              People to notify in emergencies
+            </p>
           </div>
           <Button onClick={() => setShowAddDialog(true)}>
             <Plus className="w-4 h-4 mr-1" />
@@ -69,21 +83,20 @@ const EmergencyContactsPage = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg">{contact.name}</h3>
-                    <p className="text-sm text-gray-600 capitalize">{contact.relationship}</p>
+                    <p className="text-sm text-gray-600 capitalize">
+                      {contact.relationship}
+                    </p>
                   </div>
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => setEditingContact(contact)}
-                      className="text-life-green"
-                    >
-                      <Edit className="w-5 h-5" />
-                    </button>
-                    <button
+                    <Link onClick={() => setEditingContact(contact)} iconOnly>
+                      <Edit className="w-5 h-5 text-life-green" />
+                    </Link>
+                    <Link
                       onClick={() => handleDeleteContact(contact.id)}
-                      className="text-red-500"
+                      iconOnly
                     >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                      <Trash2 className="w-5 h-5 text-red-500" />
+                    </Link>
                   </div>
                 </div>
 
@@ -101,7 +114,9 @@ const EmergencyContactsPage = () => {
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t">
-                  <span className="text-sm text-gray-600">Auto-notify on SOS/Booking</span>
+                  <span className="text-sm text-gray-600">
+                    Auto-notify on SOS/Booking
+                  </span>
                   <Toggle
                     checked={contact.autoNotify}
                     onChange={() => handleToggleAutoNotify(contact.id)}
@@ -154,7 +169,13 @@ const EmergencyContactsPage = () => {
             </List>
             <div className="flex gap-2 mt-4">
               <Button className="flex-1">Add Contact</Button>
-              <Button className="flex-1" outline onClick={() => setShowAddDialog(false)}>Cancel</Button>
+              <Button
+                className="flex-1"
+                outline
+                onClick={() => setShowAddDialog(false)}
+              >
+                Cancel
+              </Button>
             </div>
           </Card>
         )}

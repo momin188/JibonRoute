@@ -1,4 +1,4 @@
-import { Page, Navbar, Block, Button } from "konsta/react";
+import { Page, Navbar, Block, Button, Link } from "konsta/react";
 import { useNavigate } from "react-router-dom";
 import { Users, Plus } from "lucide-react";
 import PatientProfileCard from "@/components/PatientProfileCard";
@@ -6,27 +6,48 @@ import PatientProfileCard from "@/components/PatientProfileCard";
 const FamilyProfilesPage = () => {
   const navigate = useNavigate();
   const familyMembers = [
-    { id: "1", name: "Jane Doe", age: 32, bloodGroup: "B+", gender: "female", isMain: false },
-    { id: "2", name: "Jimmy Doe", age: 8, bloodGroup: "A+", gender: "male", isMain: false },
-    { id: "3", name: "Jenny Doe", age: 5, bloodGroup: "O+", gender: "female", isMain: false }
+    {
+      id: "1",
+      name: "Jane Doe",
+      age: 32,
+      bloodGroup: "B+",
+      gender: "female",
+      isMain: false,
+    },
+    {
+      id: "2",
+      name: "Jimmy Doe",
+      age: 8,
+      bloodGroup: "A+",
+      gender: "male",
+      isMain: false,
+    },
+    {
+      id: "3",
+      name: "Jenny Doe",
+      age: 5,
+      bloodGroup: "O+",
+      gender: "female",
+      isMain: false,
+    },
   ];
 
   return (
     <Page>
-      <Navbar 
-        title="Family Profiles" 
-        left={<button onClick={() => navigate(-1)} aria-label="Go back">Back</button>}
+      <Navbar
+        title="Family Profiles"
+        left={<Link onClick={() => navigate(-1)}>Back</Link>}
       />
-      
+
       <Block className="mt-4 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">Family Members</h2>
-            <p className="text-sm text-gray-600">Manage family member profiles</p>
+            <p className="text-sm text-gray-600">
+              Manage family member profiles
+            </p>
           </div>
-          <Button
-            onClick={() => navigate("/profile/family/add")}
-          >
+          <Button onClick={() => navigate("/profile/family/add")}>
             <Plus className="w-4 h-4 mr-1" />
             Add
           </Button>
