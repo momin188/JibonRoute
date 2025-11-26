@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Page, Navbar, Block, Button, Link } from "konsta/react";
+import {
+  Page,
+  Navbar,
+  NavbarBackLink,
+  Block,
+  Button,
+  BlockTitle,
+  Link,
+} from "konsta/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   InputOTP,
@@ -75,30 +83,33 @@ const OTPVerificationPage = () => {
   };
 
   return (
-    <Page>
+    <Page className="flex flex-col justify-center">
       <Navbar
-        title="Verify OTP"
-        left={<Link onClick={() => navigate(-1)}>Back</Link>}
+        transparent
+        left={<NavbarBackLink onClick={() => navigate(-1)} />}
       />
 
-      <Block className="mt-8 pb-24">
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-4xl">📱</span>
-          </div>
-          <h1 className="text-2xl font-bold mb-2">Verify Your Number</h1>
-          <p className="text-gray-600">
-            We've sent a 6-digit code to
-            <br />
-            <span className="font-semibold text-gray-800">{phone}</span>
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Demo: Use any 6-digit code (e.g., 123456)
-          </p>
+      <Block className="text-center">
+        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <span className="text-4xl">📱</span>
         </div>
+      </Block>
 
-        {/* OTP Input */}
-        <div className="flex justify-center mb-6">
+      <BlockTitle large component="h1" className="block text-center">
+        Verify Your Number
+      </BlockTitle>
+      <BlockTitle className="my-0 block text-center" component="p">
+        We've sent a 6-digit code to
+        <br />
+        <span className="font-semibold">{phone}</span>
+      </BlockTitle>
+
+      <Block className="text-center text-sm text-gray-500">
+        Demo: Use any 6-digit code (e.g., 123456)
+      </Block>
+
+      <Block strong inset className="px-0">
+        <Block nested className="flex justify-center mb-4">
           <InputOTP
             maxLength={6}
             value={otp}
@@ -113,37 +124,36 @@ const OTPVerificationPage = () => {
               <InputOTPSlot index={5} />
             </InputOTPGroup>
           </InputOTP>
-        </div>
+        </Block>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+          <Block nested className="mb-4">
             <p className="text-red-600 text-sm text-center">{error}</p>
-          </div>
+          </Block>
         )}
 
-        <Button
-          large
-          className="w-full bg-life-green mb-4"
-          onClick={handleVerify}
-          disabled={loading || otp.length !== 6}
-        >
-          {loading ? "Verifying..." : "Verify & Continue"}
-        </Button>
+        <Block nested>
+          <Button
+            rounded
+            large
+            onClick={handleVerify}
+            disabled={loading || otp.length !== 6}
+          >
+            {loading ? "Verifying..." : "Verify & Continue"}
+          </Button>
+        </Block>
 
-        {/* Resend OTP */}
-        <div className="text-center">
+        <Block nested className="text-center mt-4">
           <p className="text-sm text-gray-600 mb-2">Didn't receive the code?</p>
           {canResend ? (
             <Link onClick={handleResend}>Resend OTP</Link>
           ) : (
             <p className="text-sm text-gray-500">
               Resend in{" "}
-              <span className="font-semibold text-life-green">
-                {resendTimer}s
-              </span>
+              <span className="font-semibold text-primary">{resendTimer}s</span>
             </p>
           )}
-        </div>
+        </Block>
       </Block>
     </Page>
   );

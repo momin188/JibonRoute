@@ -2,17 +2,19 @@ import { useState } from "react";
 import {
   Page,
   Navbar,
+  NavbarBackLink,
   Block,
   Button,
   List,
   ListInput,
   Link,
   Chip,
+  BlockTitle,
 } from "konsta/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Phone as PhoneIcon, Plus, Trash2, CheckCircle } from "lucide-react";
 import { mockAuthService } from "@/services/mockAuth";
-import useAppStore from "@/store/useAppStore";
+import { $user } from "@/store/useAppStore";
 
 interface EmergencyContact {
   id: string;
@@ -25,7 +27,6 @@ const EmergencyContactsSetupPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = location.state?.userId;
-  const updateUser = useAppStore((state) => state.updateUser);
 
   const [contacts, setContacts] = useState<EmergencyContact[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -82,7 +83,11 @@ const EmergencyContactsSetupPage = () => {
       } as any);
 
       if (result.success && result.user) {
-        updateUser(result.user);
+        $user.set({
+          ...$user.get(),
+          isAuthenticated: true,
+          user: result.user,
+        });
         navigate("/");
       } else {
         setError(result.error || "Failed to save emergency contacts");
@@ -102,7 +107,11 @@ const EmergencyContactsSetupPage = () => {
       } as any);
 
       if (result.success && result.user) {
-        updateUser(result.user);
+        $user.set({
+          ...$user.get(),
+          isAuthenticated: true,
+          user: result.user,
+        });
         navigate("/");
       }
     } catch (err) {
@@ -115,25 +124,32 @@ const EmergencyContactsSetupPage = () => {
   return (
     <Page>
       <Navbar
-        title="Emergency Contacts"
-        left={<Link onClick={() => navigate(-1)}>Back</Link>}
-        right={contacts.length > 0 && <Link onClick={handleSkip}>Skip</Link>}
+        transparent
+        left={<NavbarBackLink onClick={() => navigate(-1)} />}
+        right={
+          contacts.length > 0 ? (
+            <Link onClick={handleSkip}>Skip</Link>
+          ) : undefined
+        }
       />
 
-      <Block className="mt-4 pb-24">
-        <div className="text-center mb-6">
-          <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-3">
-            <PhoneIcon className="w-10 h-10 text-life-green" />
-          </div>
-          <h2 className="text-2xl font-bold mb-2">Emergency Contacts</h2>
-          <p className="text-gray-600">
-            Add contacts who will be notified in case of emergency
-          </p>
+      <Block className="text-center">
+        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <PhoneIcon className="w-10 h-10 text-primary" />
         </div>
+      </Block>
 
+      <BlockTitle large component="h1" className="block text-center">
+        Emergency Contacts
+      </BlockTitle>
+      <BlockTitle className="my-0 block text-center" component="p">
+        Add contacts who will be notified in emergencies
+      </BlockTitle>
+
+      <Block strong inset className="px-0">
         {/* Existing Contacts */}
         {contacts.length > 0 && (
-          <div className="mb-6 space-y-3">
+          <Block nested className="space-y-3 mb-4">
             {contacts.map((contact) => (
               <div
                 key={contact.id}
@@ -146,26 +162,22 @@ const EmergencyContactsSetupPage = () => {
                   <p className="text-sm text-gray-600">
                     {contact.relationship}
                   </p>
-                  <p className="text-sm text-life-green">{contact.phone}</p>
+                  <p className="text-sm text-primary">{contact.phone}</p>
                 </div>
-                <Link
-                  onClick={() => removeContact(contact.id)}
-                  iconOnly
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
-                >
-                  <Trash2 className="w-5 h-5" />
+                <Link onClick={() => removeContact(contact.id)} iconOnly>
+                  <Trash2 className="w-5 h-5 text-red-500" />
                 </Link>
               </div>
             ))}
-          </div>
+          </Block>
         )}
 
         {/* Add Contact Form */}
         {showForm ? (
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-3">Add New Contact</h3>
+          <>
+            <BlockTitle>Add New Contact</BlockTitle>
 
-            <List strongIos outlineIos className="mb-4">
+            <List nested>
               <ListInput
                 label="Name"
                 type="text"
@@ -190,42 +202,40 @@ const EmergencyContactsSetupPage = () => {
               />
             </List>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Relationship
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {relationships.map((rel) => (
-                  <Chip
-                    key={rel}
-                    onClick={() =>
-                      setCurrentContact({
-                        ...currentContact,
-                        relationship: rel,
-                      })
-                    }
-                    className={`px-3 py-2 rounded-lg text-sm cursor-pointer text-center ${
-                      currentContact.relationship === rel
-                        ? "bg-life-green text-white"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {rel}
-                  </Chip>
-                ))}
-              </div>
-            </div>
+            <BlockTitle>Relationship</BlockTitle>
+            <Block nested className="grid grid-cols-3 gap-2 mb-4">
+              {relationships.map((rel) => (
+                <Chip
+                  key={rel}
+                  onClick={() =>
+                    setCurrentContact({
+                      ...currentContact,
+                      relationship: rel,
+                    })
+                  }
+                  className={`justify-center py-2 cursor-pointer ${
+                    currentContact.relationship === rel
+                      ? "bg-primary! text-white!"
+                      : ""
+                  }`}
+                >
+                  {rel}
+                </Chip>
+              ))}
+            </Block>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+              <Block nested className="mb-4">
                 <p className="text-red-600 text-sm">{error}</p>
-              </div>
+              </Block>
             )}
 
-            <div className="flex gap-2">
+            <Block nested className="flex gap-2">
               <Button
-                className="flex-1"
+                rounded
+                large
                 outline
+                className="flex-1"
                 onClick={() => {
                   setShowForm(false);
                   setCurrentContact({ name: "", relationship: "", phone: "" });
@@ -234,58 +244,57 @@ const EmergencyContactsSetupPage = () => {
               >
                 Cancel
               </Button>
-              <Button className="flex-1 bg-life-green" onClick={addContact}>
+              <Button rounded large className="flex-1" onClick={addContact}>
                 Add Contact
               </Button>
-            </div>
-          </div>
+            </Block>
+          </>
         ) : (
-          <Button
-            large
-            outline
-            className="w-full mb-6"
-            onClick={() => setShowForm(true)}
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Add Emergency Contact
-          </Button>
+          <Block nested>
+            <Button rounded large outline onClick={() => setShowForm(true)}>
+              <Plus className="w-5 h-5 mr-2" />
+              Add Emergency Contact
+            </Button>
+          </Block>
         )}
 
         {/* Complete Button */}
         {contacts.length > 0 && !showForm && (
-          <Button
-            large
-            className="w-full bg-life-green"
-            onClick={handleComplete}
-            disabled={loading}
-          >
-            {loading ? (
-              "Completing..."
-            ) : (
-              <>
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Complete Setup
-              </>
-            )}
-          </Button>
+          <Block nested className="mt-4">
+            <Button rounded large onClick={handleComplete} disabled={loading}>
+              {loading ? (
+                "Completing..."
+              ) : (
+                <>
+                  <CheckCircle className="w-5 h-5 mr-2" />
+                  Complete Setup
+                </>
+              )}
+            </Button>
+          </Block>
         )}
 
         {/* Skip for first time users */}
         {contacts.length === 0 && !showForm && (
-          <Button
-            large
-            outline
-            className="w-full"
-            onClick={handleSkip}
-            disabled={loading}
-          >
-            Skip for Now
-          </Button>
+          <Block nested className="mt-4">
+            <Button
+              rounded
+              large
+              outline
+              onClick={handleSkip}
+              disabled={loading}
+            >
+              Skip for Now
+            </Button>
+          </Block>
         )}
 
-        <p className="text-xs text-gray-500 text-center mt-4">
-          You can always add or edit emergency contacts later from your profile
-        </p>
+        <Block nested className="text-center mt-4">
+          <p className="text-xs text-gray-500">
+            You can always add or edit emergency contacts later from your
+            profile
+          </p>
+        </Block>
       </Block>
     </Page>
   );

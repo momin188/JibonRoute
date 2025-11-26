@@ -1,26 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Page,
   Navbar,
+  NavbarBackLink,
   Block,
   Button,
   List,
   ListInput,
-  Segmented,
-  SegmentedButton,
-  Toast,
-  Link,
+  BlockTitle,
+  Chip,
 } from "konsta/react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { User, Calendar, Droplet } from "lucide-react";
+import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
+import { User, Droplet } from "lucide-react";
 import { mockAuthService } from "@/services/mockAuth";
-import useAppStore from "@/store/useAppStore";
+import { $user } from "@/store/useAppStore";
 
 const ProfileSetupPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = location.state?.userId;
-  const login = useAppStore((state) => state.login);
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -34,6 +32,15 @@ const ProfileSetupPage = () => {
   const [error, setError] = useState("");
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+  // Get name from localStorage if available (from registration)
+  useEffect(() => {
+    const tempName = localStorage.getItem("tempUserName");
+    if (tempName) {
+      setFormData((prev) => ({ ...prev, name: tempName }));
+      localStorage.removeItem("tempUserName");
+    }
+  }, []);
 
   const handleNext = () => {
     setError("");
@@ -86,11 +93,15 @@ const ProfileSetupPage = () => {
         gender: formData.gender,
         bloodGroup: formData.bloodGroup,
         photo: formData.photo,
-        isProfileComplete: false, // Will complete after medical history
+        isProfileComplete: false,
       } as any);
 
       if (result.success && result.user) {
-        login(result.user);
+        $user.set({
+          ...$user.get(),
+          isAuthenticated: true,
+          user: result.user,
+        });
         navigate("/auth/medical-history", { state: { userId } });
       } else {
         setError(result.error || "Failed to update profile");
@@ -105,37 +116,41 @@ const ProfileSetupPage = () => {
   return (
     <Page>
       <Navbar
-        title={`Profile Setup (${step}/3)`}
-        left={<Link onClick={handleBack}>Back</Link>}
+        transparent
+        title={`Step ${step} of 3`}
+        left={<NavbarBackLink onClick={handleBack} />}
       />
 
-      <Block className="mt-4 pb-24">
-        {/* Progress indicator */}
-        <div className="flex gap-2 mb-8">
-          {[1, 2, 3].map((s) => (
-            <div
-              key={s}
-              className={`flex-1 h-1 rounded ${
-                s <= step ? "bg-life-green" : "bg-gray-200"
-              }`}
-            />
-          ))}
-        </div>
+      {/* Progress indicator */}
+      <Block className="flex gap-2">
+        {[1, 2, 3].map((s) => (
+          <div
+            key={s}
+            className={`flex-1 h-1 rounded ${
+              s <= step ? "bg-primary" : "bg-gray-200"
+            }`}
+          />
+        ))}
+      </Block>
 
-        {/* Step 1: Basic Info */}
-        {step === 1 && (
-          <div>
-            <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <User className="w-10 h-10 text-life-green" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Basic Information</h2>
-              <p className="text-gray-600">
-                Let's start with your basic details
-              </p>
+      {/* Step 1: Basic Info */}
+      {step === 1 && (
+        <>
+          <Block className="text-center">
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <User className="w-10 h-10 text-primary" />
             </div>
+          </Block>
 
-            <List strongIos outlineIos className="mb-4">
+          <BlockTitle large component="h1" className="block text-center">
+            Basic Information
+          </BlockTitle>
+          <BlockTitle className="my-0 block text-center" component="p">
+            Let's start with your basic details
+          </BlockTitle>
+
+          <Block strong inset className="px-0">
+            <List nested>
               <ListInput
                 label="Full Name"
                 type="text"
@@ -154,124 +169,120 @@ const ProfileSetupPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, age: e.target.value })
                 }
+                error={
+                  error && (
+                    <Block nested className="mt-2 mb-0">
+                      <p className="text-red-600 text-sm">{error}</p>
+                    </Block>
+                  )
+                }
               />
             </List>
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-                <p className="text-red-600 text-sm">{error}</p>
-              </div>
-            )}
+            <Block nested>
+              <Button rounded large onClick={handleNext}>
+                Next
+              </Button>
+            </Block>
+          </Block>
+        </>
+      )}
 
-            <Button large className="w-full bg-life-green" onClick={handleNext}>
-              Next
-            </Button>
-          </div>
-        )}
-
-        {/* Step 2: Gender */}
-        {step === 2 && (
-          <div>
-            <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <User className="w-10 h-10 text-life-green" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Gender</h2>
-              <p className="text-gray-600">Select your gender</p>
+      {/* Step 2: Gender */}
+      {step === 2 && (
+        <>
+          <Block className="text-center">
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <User className="w-10 h-10 text-primary" />
             </div>
+          </Block>
 
-            <div className="space-y-3 mb-4">
+          <BlockTitle large component="h1" className="block text-center">
+            Gender
+          </BlockTitle>
+          <BlockTitle className="my-0 block text-center" component="p">
+            Select your gender
+          </BlockTitle>
+
+          <Block strong inset className="px-0">
+            <Block nested className="flex flex-col gap-3 mb-4">
               {["Male", "Female", "Other"].map((gender) => (
                 <Button
                   key={gender}
+                  rounded
+                  large
                   outline={formData.gender !== gender}
                   onClick={() => setFormData({ ...formData, gender })}
-                  className={`w-full p-4! rounded-xl border-2 transition-all ${
-                    formData.gender === gender
-                      ? "border-life-green bg-life-green/5"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
                 >
-                  <span
-                    className={`text-lg font-medium ${
-                      formData.gender === gender
-                        ? "text-life-green"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {gender}
-                  </span>
+                  {gender}
                 </Button>
               ))}
-            </div>
+            </Block>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+              <Block nested className="mb-4">
                 <p className="text-red-600 text-sm">{error}</p>
-              </div>
+              </Block>
             )}
 
-            <Button large className="w-full bg-life-green" onClick={handleNext}>
-              Next
-            </Button>
-          </div>
-        )}
+            <Block nested>
+              <Button rounded large onClick={handleNext}>
+                Next
+              </Button>
+            </Block>
+          </Block>
+        </>
+      )}
 
-        {/* Step 3: Blood Group */}
-        {step === 3 && (
-          <div>
-            <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Droplet className="w-10 h-10 text-life-green" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Blood Group</h2>
-              <p className="text-gray-600">Select your blood group</p>
+      {/* Step 3: Blood Group */}
+      {step === 3 && (
+        <>
+          <Block className="text-center">
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <Droplet className="w-10 h-10 text-primary" />
             </div>
+          </Block>
 
-            <div className="grid grid-cols-4 gap-3 mb-4">
+          <BlockTitle large component="h1" className="block text-center">
+            Blood Group
+          </BlockTitle>
+          <BlockTitle className="my-0 block text-center" component="p">
+            Select your blood group
+          </BlockTitle>
+
+          <Block strong inset className="px-0">
+            <Block nested className="grid grid-cols-4 gap-3 mb-4">
               {bloodGroups.map((group) => (
-                <Button
+                <Chip
                   key={group}
-                  outline={formData.bloodGroup !== group}
                   onClick={() =>
                     setFormData({ ...formData, bloodGroup: group })
                   }
-                  className={`p-4! rounded-xl border-2 transition-all ${
+                  className={`justify-center py-3 text-lg font-bold cursor-pointer ${
                     formData.bloodGroup === group
-                      ? "border-life-green bg-life-green/5"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "bg-primary! text-white!"
+                      : ""
                   }`}
                 >
-                  <span
-                    className={`text-xl font-bold ${
-                      formData.bloodGroup === group
-                        ? "text-life-green"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {group}
-                  </span>
-                </Button>
+                  {group}
+                </Chip>
               ))}
-            </div>
+            </Block>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+              <Block nested className="mb-4">
                 <p className="text-red-600 text-sm">{error}</p>
-              </div>
+              </Block>
             )}
 
-            <Button
-              large
-              className="w-full bg-life-green"
-              onClick={handleComplete}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Continue"}
-            </Button>
-          </div>
-        )}
-      </Block>
+            <Block nested>
+              <Button rounded large onClick={handleComplete} disabled={loading}>
+                {loading ? "Saving..." : "Continue"}
+              </Button>
+            </Block>
+          </Block>
+        </>
+      )}
     </Page>
   );
 };

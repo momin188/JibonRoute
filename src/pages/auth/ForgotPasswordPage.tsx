@@ -2,14 +2,15 @@ import { useState } from "react";
 import {
   Page,
   Navbar,
+  NavbarBackLink,
   Block,
   Button,
   List,
   ListInput,
+  BlockTitle,
   Toast,
-  Link,
 } from "konsta/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Mail, CheckCircle } from "lucide-react";
 import { mockAuthService } from "@/services/mockAuth";
 
@@ -28,7 +29,6 @@ const ForgotPasswordPage = () => {
       return;
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError("Please enter a valid email address");
@@ -54,33 +54,45 @@ const ForgotPasswordPage = () => {
 
   if (success) {
     return (
-      <Page>
-        <Navbar title="Password Reset" />
+      <Page className="flex flex-col justify-center">
+        <Block className="text-center">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle className="w-12 h-12 text-green-600" />
+          </div>
+        </Block>
 
-        <Block className="mt-8 pb-24">
-          <div className="text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-12 h-12 text-green-600" />
-            </div>
-            <h1 className="text-2xl font-bold mb-3">Check Your Email</h1>
-            <p className="text-gray-600 mb-2">
-              We've sent a password reset link to:
-            </p>
-            <p className="font-semibold text-gray-800 mb-6">{email}</p>
-            <p className="text-sm text-gray-500 mb-8">
-              Click the link in the email to reset your password.
-              <br />
-              (This is a demo - check console for the reset link)
-            </p>
-            <Button
-              large
-              className="w-full bg-life-green mb-3"
-              onClick={() => navigate("/auth/login")}
-            >
+        <BlockTitle large component="h1" className="block text-center">
+          Check Your Email
+        </BlockTitle>
+        <BlockTitle className="my-0 block text-center" component="p">
+          We've sent a password reset link to:
+        </BlockTitle>
+
+        <Block className="text-center">
+          <p className="font-semibold text-gray-800 mb-4">{email}</p>
+          <p className="text-sm text-gray-500 mb-6">
+            Click the link in the email to reset your password.
+            <br />
+            (This is a demo - check console for the reset link)
+          </p>
+        </Block>
+
+        <Block strong inset className="px-0">
+          <Block nested>
+            <Button rounded large onClick={() => navigate("/auth/login")}>
               Back to Login
             </Button>
-            <Link onClick={() => setSuccess(false)}>Use a different email</Link>
-          </div>
+          </Block>
+
+          <Block nested className="text-center mt-4">
+            <RouterLink
+              to="#"
+              onClick={() => setSuccess(false)}
+              className="text-primary"
+            >
+              Use a different email
+            </RouterLink>
+          </Block>
         </Block>
       </Page>
     );
@@ -89,52 +101,57 @@ const ForgotPasswordPage = () => {
   return (
     <Page>
       <Navbar
-        title="Forgot Password"
-        left={<Link onClick={() => navigate(-1)}>Back</Link>}
+        transparent
+        left={<NavbarBackLink onClick={() => navigate(-1)} />}
       />
 
-      <Block className="mt-8 pb-24">
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-life-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="w-10 h-10 text-life-green" />
-          </div>
-          <h1 className="text-2xl font-bold mb-2">Reset Password</h1>
-          <p className="text-gray-600">
-            Enter your email address and we'll send you a link to reset your
-            password.
-          </p>
+      <Block className="text-center">
+        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+          <Mail className="w-10 h-10 text-primary" />
         </div>
+      </Block>
 
-        <List strongIos outlineIos className="mb-4">
+      <BlockTitle large component="h1" className="block text-center">
+        Reset Password
+      </BlockTitle>
+      <BlockTitle className="my-0 block text-center" component="p">
+        Enter your email and we'll send you a reset link
+      </BlockTitle>
+
+      <Block strong inset className="px-0">
+        <List nested>
           <ListInput
             label="Email Address"
             type="email"
             placeholder="your.email@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            clearButton
+            error={
+              error && (
+                <Block nested className="mt-2 mb-0">
+                  <p className="text-red-600 text-sm">{error}</p>
+                </Block>
+              )
+            }
           />
         </List>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-            <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        )}
+        <Block nested>
+          <Button
+            rounded
+            large
+            onClick={handleResetPassword}
+            disabled={loading}
+          >
+            {loading ? "Sending..." : "Send Reset Link"}
+          </Button>
+        </Block>
 
-        <Button
-          large
-          className="w-full bg-life-green mb-4"
-          onClick={handleResetPassword}
-          disabled={loading}
-        >
-          {loading ? "Sending..." : "Send Reset Link"}
-        </Button>
-
-        <div className="text-center text-sm">
-          <span className="text-gray-600">Remember your password? </span>
-          <Link onClick={() => navigate("/auth/login")}>Login</Link>
-        </div>
+        <Block nested className="text-center mt-4">
+          <RouterLink to="/auth/login" className="text-primary">
+            Remember your password? Login
+          </RouterLink>
+        </Block>
       </Block>
     </Page>
   );
