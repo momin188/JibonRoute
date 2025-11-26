@@ -52,12 +52,15 @@ const ProfilePage = () => {
       />
 
       {/* Profile Header */}
-      <Block className="bg-primary text-white rounded-lg mx-4 mt-4 p-4">
+      <Block inset className="bg-primary text-white p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center">
+            <Block
+              nested
+              className="w-16 h-16 bg-white/20 rounded-3xl flex items-center justify-center"
+            >
               <User className="w-8 h-8" />
-            </div>
+            </Block>
             <div>
               <h2 className="text-xl font-bold">{user.name || "User"}</h2>
               <p className="text-sm opacity-80 mt-1">

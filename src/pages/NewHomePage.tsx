@@ -80,7 +80,7 @@ const NewHomePage = () => {
 
         {/* Welcome Section */}
         {isAuthenticated && user && (
-          <Block className="bg-primary text-white rounded-lg mx-4 mt-4 p-4">
+          <Block inset className="bg-primary text-white p-4">
             <p className="text-sm opacity-80">Welcome back,</p>
             <p className="text-xl font-bold">{user.name}</p>
             <p className="text-sm opacity-80 mt-1">
@@ -90,18 +90,18 @@ const NewHomePage = () => {
         )}
 
         {/* Emergency SOS Button */}
-        <Block>
-          <Button
-            large
-            className="bg-red-600! text-white! py-6! h-auto! rounded-lg!"
-            onClick={handleEmergencySOS}
-          >
-            <div className="flex flex-col items-center gap-2">
-              <AlertCircle className="w-10 h-10" />
-              <span className="text-xl font-bold">EMERGENCY SOS</span>
-              <span className="text-sm opacity-90">24/7 Instant Response</span>
-            </div>
-          </Button>
+        <Block
+          inset
+          strong
+          component="button"
+          className="block w-[calc(100%-2*(var(--k-safe-area-right)+var(--spacing)*4))] bg-red-600 text-white py-6"
+          onClick={handleEmergencySOS}
+        >
+          <div className="flex flex-col items-center gap-2">
+            <AlertCircle className="w-10 h-10" />
+            <span className="text-xl font-bold">EMERGENCY SOS</span>
+            <span className="text-sm opacity-90">24/7 Instant Response</span>
+          </div>
         </Block>
 
         {/* Stats Section */}
@@ -261,7 +261,11 @@ const NewHomePage = () => {
         </List>
 
         {/* Trust Badge */}
-        <Block className="bg-primary/5 border border-primary/20 rounded-xl text-center">
+        <Block
+          inset
+          outline
+          className="bg-primary/5 border-primary/20 text-center"
+        >
           <p className="font-bold text-primary">
             🚑 Trusted by 10,000+ Patients
           </p>
