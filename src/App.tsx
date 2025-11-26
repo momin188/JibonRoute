@@ -12,7 +12,7 @@ import NotFound from "./pages/NotFound";
 import OnboardingPage from "./pages/onboarding/OnboardingPage";
 
 // Auth pages
-import NewRegisterPage from "./pages/auth/NewRegisterPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import NewLoginPage from "./pages/auth/NewLoginPage";
 import OTPVerificationPage from "./pages/auth/OTPVerificationPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
@@ -82,7 +82,7 @@ function Router() {
       {/* Auth Routes */}
       <Route path="/auth">
         <Route path="login" element={<NewLoginPage />} />
-        <Route path="register" element={<NewRegisterPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route path="verify-otp" element={<OTPVerificationPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="profile-setup" element={<ProfileSetupPage />} />
